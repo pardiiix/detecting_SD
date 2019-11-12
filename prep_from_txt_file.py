@@ -172,6 +172,9 @@ def prep_text():
 
     score = model.evaluate(X_dev, y_dev, verbose = 1)
 
+    model.save("model.h5")
+    print("Saved model to disk")
+
     # print(score)
     print("test set score: ", score[0])
     print("test set accuracy: ", score[1])
