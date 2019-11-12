@@ -14,9 +14,10 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from numpy import asarray, array, zeros
 from keras.models import Sequential
-from keras.layers.embeddings import Embedding
-from keras.layers.recurrent import LSTM
-from keras.layers.core import Dense
+from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
+# from keras.layers.embeddings import Embedding
+# from keras.layers.recurrent import LSTM, Bidirectional
+# from keras.layers.core import Dense
 import matplotlib.pyplot as plt
 import keras.metrics
 from keras import backend as K
@@ -155,7 +156,7 @@ def prep_text():
                         ))
 
 
-    model.add(LSTM(64, return_sequences=False, name = 'lstm_layer'))
+    model.add(Bidirectional(LSTM(64, return_sequences=False, name = 'lstm_layer')))
     model.add(Dropout(0.5))
     model.add(Dense(1, activation= 'sigmoid', name = 'output_layer'))
 
@@ -163,10 +164,10 @@ def prep_text():
     # optimizer=keras.optimizers.SGD(lr=0.03, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(optimizer= optimizer, loss='binary_crossentropy', metrics=['acc', recall_m, precision_m, f1_m])
 
-    print(model.summary())
-    print("lr", K.eval(model.optimizer.lr))
+    # print(model.summary())
+    # print("lr", K.eval(model.optimizer.lr))
 
-    history = model.fit(X_train, y_train, batch_size=64, epochs=5, verbose = 1, validation_split =0.2) #verbose =1 : see trainig progress for each epoch
+    history = model.fit(X_train, y_train, batch_size=64, epochs=6, verbose = 1, validation_split =0.2) #verbose =1 : see trainig progress for each epoch
 
 
     score = model.evaluate(X_dev, y_dev, verbose = 1)
