@@ -64,10 +64,6 @@ def f1_m(y_true, y_pred):
     recall = recall_m(y_true, y_pred)
     return 2*((precision*recall)/(precision+recall+K.epsilon()))
 
-def sigmoid(X):
-   return 1/(1+np.exp(-X))
-
-
 #reading the labelled comment file
 with open('abdominal_comments.csv', 'r') as file:
     comments = file.readlines()
@@ -87,12 +83,6 @@ not_stopwords = {'my', 'I', 'myself', 'me'} #removing some stopwords related to 
 final_stop_words = set([word for word in stopword if word not in not_stopwords])
 speller = Speller()
 
-# delete_words = 'reply', 'report'
-
-# df = df[df["comments"].str.contains('report|reply')==False]
-# df = df.iloc[1:,:]
-# if df["comments"].str.contains([0-9]+):
-#     df["comments"] = re.sub("[0-9]+", " ", str(df['comments']))
 
 # df=df.drop(0 , axis = 0)
 for i in range(len(df['comments'])):
@@ -117,7 +107,7 @@ for i in range(len(df['comments'])):
 # print(df )
 
 max_sent_len = 100
-max_vocab_size = 1500
+max_vocab_size = 2000
 word_seq = [text_to_word_sequence(comment) for comment in df['comments']]
 # print(word_seq)
 
@@ -142,8 +132,11 @@ dependencies = {
 model = load_model('saved_cnn_model.h5', custom_objects=dependencies)
 prediction = model.predict(np.array(X))
 
-# print(prediction>0.5)
+
 prediction = np.where(prediction > 0.5, 1, 0)
 # print(prediction)
 df['polarity'] = prediction
-print(df)
+# for i in range(len(df['polarity'])):
+#     if (df['polarity'].iloc[i] == 0):
+#         print(df['comments'].iloc[i])
+#         # print("h")
