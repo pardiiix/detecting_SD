@@ -140,3 +140,4 @@ df['polarity'] = prediction
 #     if (df['polarity'].iloc[i] == 0):
 #         print(df['comments'].iloc[i])
 #         # print("h")
+print(df)
