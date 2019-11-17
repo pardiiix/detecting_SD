@@ -46,6 +46,27 @@ def deEmojify(inputString):
     '''
     return inputString.encode('ascii', 'ignore').decode('ascii')
 
+def recall_m(y_true, y_pred):
+        true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+        possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+        recall = true_positives / (possible_positives + K.epsilon())
+        return recall
+
+def precision_m(y_true, y_pred):
+        true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+        predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+        precision = true_positives / (predicted_positives + K.epsilon())
+        return precision
+
+
+def f1_m(y_true, y_pred):
+    precision = precision_m(y_true, y_pred)
+    recall = recall_m(y_true, y_pred)
+    return 2*((precision*recall)/(precision+recall+K.epsilon()))
+
+def sigmoid(X):
+   return 1/(1+np.exp(-X))
+
 
 #reading the labelled comment file
 with open('abdominal_comments.csv', 'r') as file:
@@ -66,21 +87,37 @@ not_stopwords = {'my', 'I', 'myself', 'me'} #removing some stopwords related to 
 final_stop_words = set([word for word in stopword if word not in not_stopwords])
 speller = Speller()
 
+# delete_words = 'reply', 'report'
 
+# df = df[df["comments"].str.contains('report|reply')==False]
+# df = df.iloc[1:,:]
+# if df["comments"].str.contains([0-9]+):
+#     df["comments"] = re.sub("[0-9]+", " ", str(df['comments']))
+
+# df=df.drop(0 , axis = 0)
 for i in range(len(df['comments'])):
-    df['comments'][i] = re.sub("[0-9]+", " ", str(df['comments'][i])) #removing digits, since they're not important
-    df['comments'][i] = re.sub(r"Reply", " ", str(df['comments'][i]))
-    df['comments'][i] = re.sub(r"Report", " ", str(df['comments'][i]))
-    df['comments'][i] = re.sub("[0-9]+likes", " ", str(df['comments'][i]))
-    df['comments'][i] = re.sub("[0-9]+replies", " ", str(df['comments'][i]))
-    df['comments'][i] = deEmojify(df['comments'][i])
-    df['comments'][i] = strip_punctuation(df['comments'][i])
-    df['comments'][i] = ' '.join(speller(word) for word in df['comments'][i].split() if word not in final_stop_words) #removing stopwords and spell-correcting
+    if 'report' in df['comments'][i]:
+        df = df.drop(i, axis=0)
+    elif 'reply' in df['comments'][i]:
+        df = df.drop(i, axis=0)
+    elif 'likes' in df['comments'][i]:
+        df = df.drop(i, axis=0)
+    elif 'selection name' in df['comments'][i]:
+        df = df.drop(i, axis=0)
+    else:
+        df['comments'][i] = re.sub("[0-9]+", " ", str(df['comments'][i])) #removing digits, since they're not important
+        # df['comments'][i] = re.sub(r"reply", "", str(df['comments'][i])))
+        # df['comments'][i] = re.sub(r"report", "", str(df['comments'][i]))
+        # df['comments'][i] = re.sub("[0-9]?likes", "", str(df['comments'][i]))
+        df['comments'][i] = re.sub("[0-9]?replies", "", str(df['comments'][i]))
+        df['comments'][i] = deEmojify(df['comments'][i])
+        df['comments'][i] = strip_punctuation(df['comments'][i])
+        df['comments'][i] = ' '.join(speller(word) for word in df['comments'][i].split() if word not in final_stop_words) #removing stopwords and spell-correcting
 
+# print(df )
 
-
-max_sent_len = 80
-max_vocab_size = 200
+max_sent_len = 100
+max_vocab_size = 1500
 word_seq = [text_to_word_sequence(comment) for comment in df['comments']]
 # print(word_seq)
 
@@ -95,7 +132,18 @@ X = pad_sequences(X, maxlen = max_sent_len, padding= 'post' , truncating='post')
 
 # y = df['polarity']
 # print(X)
+
+dependencies = {
+    'recall_m': recall_m,
+    'precision_m': precision_m,
+    'f1_m': f1_m
+}
+
+model = load_model('saved_cnn_model.h5', custom_objects=dependencies)
 prediction = model.predict(np.array(X))
-print(prediction)
+
+# print(prediction>0.5)
+prediction = np.where(prediction > 0.5, 1, 0)
+# print(prediction)
 df['polarity'] = prediction
-print(df['polarity'])
+print(df)
