@@ -3,7 +3,7 @@
 import nltk, re, autocorrect, pandas, numpy, keras, tensorflow, sklearn, matplotlib
 
 
-First, copy and paste glove 100d to directory. Then, run CNN_model.py. This trains the model and saves it to saved_cnn_model.h5.
+First, copy and paste glove 100d to directory. Then, run CNN_1D.py. This trains the model and saves it to saved_cnn_model.h5.
 After the model has been trained, run load_keras_model.py. This will give you the predictions. (open any csv file in the code (line 72)that you need to examine).
 
 --------------------------------------------------------------------------
