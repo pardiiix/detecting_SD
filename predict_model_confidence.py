@@ -149,7 +149,7 @@ def predict_label(file_name):
             df['polarity'].iloc[i] = input("What is the label of this comment?:\n{}".format(df['exact_comments'].iloc[i]))
             # import ipdb;ipdb.set_trace()
 
-    df.to_pickle(file_name_dataframe)
+    df.to_pickle("{}_dataframe".format(file_name))
     print(df)
 
     # neg_df = pd.DataFrame(columns=['comments']) #creates a new empty dataframe
@@ -163,6 +163,6 @@ def predict_label(file_name):
 
     # print('new labels have been created for {}.'.format(file_name))
 
-predict_label('abdominal_comments.csv')
+# predict_label('abdominal_comments.csv')
 # predict_label('depression_comments.csv')
 # predict_label('knee.csv')
