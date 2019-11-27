@@ -36,7 +36,7 @@ def main():
     print("model has been trained.\nThe model will now try to predict labels for other files.")
     df = predict_label('testing_sample_active.csv') #predicts unlabbeled comments (this needs to be changed)
     # new_df = append_to_dataframe(df, testing_sample_active.csv_dataframe) #this needs to be changed
-    new_df = df.to_csv("dataframe_testing_sample_active", mode='a', header=False) #creates csv file for unlabelled dataframe
+    new_df = pd.read_pickle("dataframe_testing_sample_active.csv") #creates csv file for unlabelled dataframe
     labeled_df = pd.read_pickle("sdnsd_labels_df.csv")
     print("new df:")
     print(new_df)
@@ -44,8 +44,8 @@ def main():
     print("labelled df:")
     print(labeled_df) #remove this
     import ipdb;ipdb.set_trace()
-
-    create_semi_cnn_model(new_df) #this needs to be changed
+    concat_df = labeled_df.append(new_df, sort=True)
+    create_semi_cnn_model(concat_df) #this needs to be changed
 
 if __name__ == "__main__":
     main()
