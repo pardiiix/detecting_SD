@@ -149,8 +149,9 @@ def predict_label(file_name):
             df['polarity'].iloc[i] = input("What is the label of this comment?:\n{}".format(df['exact_comments'].iloc[i]))
             # import ipdb;ipdb.set_trace()
 
-    df.to_pickle("{}_dataframe".format(file_name))
+    df.to_pickle("dataframe_{}".format(file_name))
     print(df)
+    return df
 
     # neg_df = pd.DataFrame(columns=['comments']) #creates a new empty dataframe
     # neg_df = df[df.polarity == 0] #adds negative comments to the dataframe

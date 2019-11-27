@@ -26,13 +26,26 @@ from keras.layers.core import Reshape
 # nltk.download('wordnet')
 from CNN_1D import create_cnn_model
 from predict_model_confidence import predict_label
+from train_self_active import create_semi_cnn_model, append_to_dataframe
 
 
 
 def main():
+    print("creating the first model by manually labeled data...")
     create_cnn_model()
     print("model has been trained.\nThe model will now try to predict labels for other files.")
-    predict_label('abdominal_comments.csv')
+    df = predict_label('testing_sample_active.csv') #predicts unlabbeled comments (this needs to be changed)
+    # new_df = append_to_dataframe(df, testing_sample_active.csv_dataframe) #this needs to be changed
+    new_df = df.to_csv("dataframe_testing_sample_active", mode='a', header=False) #creates csv file for unlabelled dataframe
+    labeled_df = pd.read_pickle("sdnsd_labels_df.csv")
+    print("new df:")
+    print(new_df)
+
+    print("labelled df:")
+    print(labeled_df) #remove this
+    import ipdb;ipdb.set_trace()
+
+    create_semi_cnn_model(new_df) #this needs to be changed
 
 if __name__ == "__main__":
     main()

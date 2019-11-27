@@ -74,8 +74,9 @@ def create_cnn_model():
         # for i in data["memory_loss"]:
         #     lower_text.append(to_lower(i["comments"])) #converting the comments in memory_loss dictionary to lower case
 
-    df = pd.DataFrame(columns=['comments', 'polarity'])
+    df = pd.DataFrame(columns=['comments', 'exact_comments', 'polarity'])
     df['comments'] = no_sd + sd
+    df['exact_comments'] = no_sd + sd
     df['polarity'] = [0] * len(no_sd) + [1] * len(sd)
     df = df.sample(frac=1, random_state = 10) #shuffling the rows
     df.reset_index(inplace = True, drop = True)
@@ -93,7 +94,7 @@ def create_cnn_model():
         df['comments'][i] = strip_punctuation(df['comments'][i])
         df['comments'][i] = ' '.join(speller(word) for word in df['comments'][i].split() if word not in final_stop_words) #removing stopwords and spell-correcting
 
-
+    df.to_pickle('sdnsd_labels_df')
 
     max_sent_len = 200
     max_vocab_size = 4000
