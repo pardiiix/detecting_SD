@@ -45,7 +45,8 @@ def main():
     print(labeled_df) #remove this
     import ipdb;ipdb.set_trace()
     concat_df = labeled_df.append(new_df, sort=True)
-    create_semi_cnn_model(concat_df) #this needs to be changed
+    concat_df.to_pickle("concatenated_dataframe.csv")
+    create_semi_cnn_model("concatenated_dataframe.csv") #this needs to be changed
 
 if __name__ == "__main__":
     main()
