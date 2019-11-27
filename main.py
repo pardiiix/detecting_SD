@@ -31,19 +31,17 @@ from train_self_active import create_semi_cnn_model, append_to_dataframe
 
 
 def main():
-    print("creating the first model by manually labeled data...")
+    print("creating the first model with the manually labeled data (SD and NSD text files)...")
     create_cnn_model()
-    print("model has been trained.\nThe model will now try to predict labels for other files.")
+    print("model has been trained.\nThe model will now try to predict labels for other files and ask you to help.")
     df = predict_label('testing_sample_active.csv') #predicts unlabbeled comments (this needs to be changed)
-    # new_df = append_to_dataframe(df, testing_sample_active.csv_dataframe) #this needs to be changed
     new_df = pd.read_pickle("dataframe_testing_sample_active.csv") #creates csv file for unlabelled dataframe
-    labeled_df = pd.read_pickle("sdnsd_labels_df.csv")
+    labeled_df = pd.read_pickle("sdnsd_labels_df.csv") #sd and nsd dataframe
     print("new df:")
     print(new_df)
 
     print("labelled df:")
     print(labeled_df) #remove this
-    import ipdb;ipdb.set_trace()
     concat_df = labeled_df.append(new_df, sort=True)
     concat_df.to_pickle("concatenated_dataframe.csv")
     create_semi_cnn_model("concatenated_dataframe.csv") #this needs to be changed
