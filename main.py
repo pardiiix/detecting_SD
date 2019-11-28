@@ -20,6 +20,8 @@ from keras import backend as K
 from keras import optimizers
 from keras.layers import Dropout
 from keras.layers.core import Reshape
+import glob
+import os
 # import autocorrect
 # nltk.download('punkt')
 # nltk.download('stopwords')
@@ -27,6 +29,7 @@ from keras.layers.core import Reshape
 from CNN_1D import create_cnn_model
 from predict_model_confidence import predict_label
 from train_self_active import create_semi_cnn_model, append_to_dataframe
+from create_unlabeled_df import create_df_for_unlabeled_data
 
 
 
@@ -34,15 +37,37 @@ def main():
     print("creating the first model with the manually labeled data (SD and NSD text files)...")
     create_cnn_model()
     print("model has been trained.\nThe model will now try to predict labels for other files and ask you to help.")
-    df = predict_label('testing_sample_active.csv') #predicts unlabbeled comments (this needs to be changed)
-    new_df = pd.read_pickle("dataframe_testing_sample_active.csv") #creates csv file for unlabelled dataframe
-    labeled_df = pd.read_pickle("sdnsd_labels_df.csv") #sd and nsd dataframe
-    print("new df:")
-    print(new_df)
+    # unlabeled_dataframe = create_df_for_unlabeled_data()
+    ul_data = pd.DataFrame(columns=['comments', 'exact_comments', 'polarity', 'confidence_score'])
+    path = r'/home/mo/pardis/unlabelled_comments' # use your path
+    all_files = glob.glob(path + "/*.csv")
+    dfs = {}
 
-    print("labelled df:")
-    print(labeled_df) #remove this
-    concat_df = labeled_df.append(new_df, sort=True)
+    file_names= []
+    for comment_file in os.listdir(path):
+        file_names.append(comment_file)
+
+    print("The file names are:",file_names)
+
+    for file_path in all_files:
+        print(file_path)
+        name_of_file = str(file_path).split('/')[-1]
+        # import ipdb; ipdb.set_trace()
+        dfs[name_of_file] = predict_label(file_path)
+        print("{} : {}".format(name_of_file, dfs[name_of_file]))
+        print("---------------------------------------------------")
+
+    labeled_df = pd.read_pickle("sdnsd_labels_df.csv") #sd and nsd dataframe
+
+    for keys, values in dfs.items():
+        #append predicted dataframes to labeled_df
+        concat_df = labeled_df.append(values, sort=True)
+
+    # df = predict_label('testing_sample_active.csv') #predicts unlabbeled comments (this needs to be changed)
+    # new_df = pd.read_pickle("dataframe_testing_sample_active.csv") #creates csv file for unlabelled dataframe
+
+
+
     concat_df.to_pickle("concatenated_dataframe.csv")
     create_semi_cnn_model("concatenated_dataframe.csv") #this needs to be changed
 
