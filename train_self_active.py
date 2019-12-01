@@ -55,6 +55,9 @@ def f1_m(y_true, y_pred):
     recall = recall_m(y_true, y_pred)
     return 2*((precision*recall)/(precision+recall+K.epsilon()))
 
+def append_to_dataframe(df, second_file):
+    return df.to_csv(second_file, mode='a', header=False)
+
 def create_semi_cnn_model(file_name):
 
     semi_df = pd.read_pickle(file_name)
@@ -176,4 +179,4 @@ def create_semi_cnn_model(file_name):
     plt.legend(['train', 'dev'], loc='upper left')
     plt.show()
 
-create_semi_cnn_model('testing_sample_active.csv_dataframe')
+# create_semi_cnn_model('testing_sample_active.csv_dataframe')

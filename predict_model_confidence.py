@@ -93,7 +93,7 @@ def predict_label(file_name):
             df['comments'][i] = re.sub("[0-9]+", " ", str(df['comments'][i])) #removing digits, since they're not important
             # df['comments'][i] = re.sub(r"reply", "", str(df['comments'][i])))
             # df['comments'][i] = re.sub(r"report", "", str(df['comments'][i]))
-            # df['comments'][i] = re.sub("[0-9]?likes", "", str(df['comments'][i]))
+            df['comments'][i] = re.sub("[0-9]?likes", "", str(df['comments'][i]))
             df['comments'][i] = re.sub("[0-9]?replies", "", str(df['comments'][i]))
             df['comments'][i] = deEmojify(df['comments'][i])
             df['comments'][i] = strip_punctuation(df['comments'][i])
@@ -149,8 +149,9 @@ def predict_label(file_name):
             df['polarity'].iloc[i] = input("What is the label of this comment?:\n{}".format(df['exact_comments'].iloc[i]))
             # import ipdb;ipdb.set_trace()
 
-    df.to_pickle("{}_dataframe".format(file_name))
-    print(df)
+    df.to_pickle("{}".format(str(file_name).split('/')[-1]))
+    # print(df)
+    return df
 
     # neg_df = pd.DataFrame(columns=['comments']) #creates a new empty dataframe
     # neg_df = df[df.polarity == 0] #adds negative comments to the dataframe

@@ -1,15 +1,9 @@
 # detecting_SD
 
-import nltk, re, autocorrect, pandas, numpy, keras, tensorflow, sklearn, matplotlib
+import nltk, re, autocorrect, pandas, numpy, keras, tensorflow, sklearn, matplotlib, glob, os
 
 ---------------------------------------------------
-Run main.py.
-OR:
-First, copy and paste glove 100d to directory. Then, run CNN_1D.py. This trains the model and saves it to saved_cnn_model.h5.
-After the model has been trained, run predict_model_confidence.py. This will give you the predictions + ask you to  label the comments that the network was not sure about. (open any csv file in the code that you need to examine).
+Run main.py to train with the manualy labeled data (SD and NSD files). Then it predicts the unlabeled data with trained parameters and asks for the data which it cannot decide whether they are self disclosing or not. It then trains all over again with the labeled data which it is almost certain of (self-learning) and the data which it was not certain at first but asked the user (active learning).
+Then, run final_prediction.py to get the prediction on unlabeled data which we would like to analyse.
 
---------------------------------------------------------------------------
-
-Or, you can just use the saved_cnn_model.h5, which I have trained, and run run predict_model_confidence.py.
-
---------------------------------------------------------------------------
+----------------------------------------------------
