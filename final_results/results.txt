@@ -1,0 +1,10 @@
+final_results:
+
+
+Epoch 20/20
+600/600 [==============================] - 0s 252us/step - loss: 0.1361 - acc: 0.9617 - recall_m: 0.9468 - precision_m: 0.9890 - f1_m: 0.9665 - val_loss: 0.3190 - val_acc: 0.8344 - val_recall_m: 0.8098 - val_precision_m: 0.8628 - val_f1_m: 0.8333
+322/322 [==============================] - 0s 78us/step
+saved model to disk
+test set score:  0.3866380346672876
+test set accuracy:  0.8416149020195007
+
