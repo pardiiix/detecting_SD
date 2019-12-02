@@ -145,7 +145,13 @@ def predict_label(file_name):
     # pos_df = df[df.polarity == 1]
     # pos_df['comments'].to_csv(path_or_buf='/home/mo/pardis/new_labels_pos.txt', mode='a', sep=' ', index=False, header=False) #saves positive comments to text
 
-predict_label('abdominal_comments.csv')
-predict_label('depression_comments.csv')
-predict_label('knee.csv')
-predict_label('memory_loss.csv')
+ab_df = predict_label('abdominal_comments.csv')
+dep_df = predict_label('depression_comments.csv')
+knee_df  = predict_label('knee.csv')
+mem_df = predict_label('memory_loss.csv')
+
+#counting polaity values (sd vs. nsd)
+print(ab_df['polarity'].value_counts())
+print(dep_df['polarity'].value_counts())
+print(knee_df['polarity'].value_counts())
+print(mem_df['polarity'].value_counts())
