@@ -159,23 +159,3 @@ print("Random Forest Test set accuracy:",accuracy_score(y_test,y_test_pred))
 print("Random Forest Test set precision:",precision_score(y_test,y_test_pred))
 print("Random Forest Test set recall:",recall_score(y_test,y_test_pred))
 print("Random Forest Test set f1_score:",f1_score(y_test,y_test_pred))
-
-#-----------------------------------------------------------------------
-# Logistic Regression
-LR = LogisticRegression(random_state=0)
-LR.fit(X_train_Tfidf, y_train)
-y_dev_pred = LR.predict(X_dev_Tfidf)
-print("Logistic Regression Validation set accuracy:",accuracy_score(y_dev,y_dev_pred))
-print("Logistic Regression Validation set precision:",precision_score(y_dev,y_dev_pred))
-print("Logistic Regression Validation set recall:",recall_score(y_dev,y_dev_pred))
-print("Logistic Regression Validation set f1_score:",f1_score(y_dev,y_dev_pred))
-
-y_test_pred = LR.predict(X_test_Tfidf)
-print("Logistic Regression Test set accuracy:",accuracy_score(y_test,y_test_pred))
-print("Logistic Regression Test set precision:",precision_score(y_test,y_test_pred))
-print("Logistic Regression Test set recall:",recall_score(y_test,y_test_pred))
-print("Logistic Regression Test set f1_score:",f1_score(y_test,y_test_pred))
-
-
-
-
