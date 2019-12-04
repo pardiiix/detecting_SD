@@ -151,14 +151,17 @@ def create_semi_cnn_model(file_name):
     history = model.fit(X_train, y_train, batch_size=32, epochs=20, verbose = 1, validation_split =0.2) #verbose =1 : see trainig progress for each epoch
 
 
-    score = model.evaluate(X_dev, y_dev, verbose = 1)
+    loss, accuracy, f1_score, precision, recall = model.evaluate(X_test, y_test, verbose = 1)
 
     model.save("saved_semi_cnn_model.h5")
     print("saved model to disk")
 
     # print(score)
-    print("test set score: ", score[0])
-    print("test set accuracy: ", score[1])
+    print("loss: ", loss)
+    print("accuracy: ", accuracy)
+    print("f1_score:", f1_score)
+    print("precision:", precision)
+    print("recall:", recall)
 
     # print(history.history)
     plt.plot(history.history['acc'])
