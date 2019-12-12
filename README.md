@@ -7,3 +7,6 @@ Run main.py to train with the manualy labeled data (SD and NSD files). Then it p
 Then, run final_prediction.py to get the prediction on unlabeled data which we would like to analyse.
 
 ----------------------------------------------------
+
+
+You can also try running CNN_1D, CNN_2D, 
