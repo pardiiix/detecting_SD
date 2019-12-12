@@ -15,3 +15,5 @@ You can also run CNN_1D, CNN_2D, simpleRNN_model, GRU_model, LSTM_model and bi_L
 Note: to run CNN_1D, call the function create_cnn_model()
 
 Note: Add a glove100d text file to the root
+
+Note: change path in the main function of the main file (line 42)
