@@ -12,4 +12,6 @@ Then, run final_prediction.py to get the prediction on unlabeled data which we w
 You can also run CNN_1D, CNN_2D, simpleRNN_model, GRU_model, LSTM_model and bi_LSTM_model to find the best model with the first set of labeled data.
 
 
-Note: to run CNN_1D, 
+Note: to run CNN_1D, call the function create_cnn_model()
+
+Note: Add a glove100d text file to the root
